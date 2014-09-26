@@ -1,0 +1,7 @@
+c:\rip\Algebra.Boolean\Algebra.Boolean\bin\Debug\Algebra.Boolean.XML
+c:\rip\Algebra.Boolean\Algebra.Boolean\bin\Debug\Algebra.Boolean.dll
+c:\rip\Algebra.Boolean\Algebra.Boolean\bin\Debug\Algebra.Boolean.pdb
+c:\rip\Algebra.Boolean\Algebra.Boolean\bin\Debug\FSharp.Core.dll
+c:\rip\Algebra.Boolean\Algebra.Boolean\bin\Debug\FSharp.Core.xml
+c:\rip\Algebra.Boolean\Algebra.Boolean\obj\Debug\Algebra.Boolean.dll
+c:\rip\Algebra.Boolean\Algebra.Boolean\obj\Debug\Algebra.Boolean.pdb

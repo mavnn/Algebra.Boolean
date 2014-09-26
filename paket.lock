@@ -1,0 +1,8 @@
+NUGET
+  remote: http://nuget.org/api/v2
+  specs:
+    FsCheck (1.0.0)
+    FsCheck.Xunit (1.0.0)
+      xunit (>= 1.9.2)
+      FsCheck (>= 1.0.0)
+    xunit (1.9.2)
