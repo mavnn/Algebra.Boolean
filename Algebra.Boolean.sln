@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Algebra.Boolean", "Algebra.Boolean\Algebra.Boolean.fsproj", "{023B9A33-3D12-4878-8BA5-646888F730CF}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Algebra.Boolean.Tests", "Algebra.Boolean.Tests\Algebra.Boolean.Tests.fsproj", "{8120AF4E-5B8E-44B6-936F-1392C400BF1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{023B9A33-3D12-4878-8BA5-646888F730CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{023B9A33-3D12-4878-8BA5-646888F730CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{023B9A33-3D12-4878-8BA5-646888F730CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{023B9A33-3D12-4878-8BA5-646888F730CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8120AF4E-5B8E-44B6-936F-1392C400BF1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8120AF4E-5B8E-44B6-936F-1392C400BF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8120AF4E-5B8E-44B6-936F-1392C400BF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8120AF4E-5B8E-44B6-936F-1392C400BF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
