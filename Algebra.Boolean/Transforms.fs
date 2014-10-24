@@ -171,27 +171,47 @@ let deMorgan quote =
     | _ ->
         quote
 
-let beta quote =
-    let rec findApplication values q =
-        match q with
-        | Application (body, value) ->
-            findApplication (value::values) body 
-        | ShapeLambda (v, e) ->
-            match values with
-            | [] ->
-                Expr.Lambda(v, findApplication [] e)
-            | h::t ->
-                findApplication t (replaceVar v.Name h e)
-        | ShapeVar v ->
-            Expr.Var v
-        | ShapeCombination (o, es) ->
-            RebuildShapeCombination(o, es |> List.map (findApplication values))
-    and replaceVar name value body =
-        match body with
-        | ShapeVar v ->
-            if v.Name = name then value else Expr.Var v
-        | ShapeLambda (v, e) ->
-            Expr.Lambda(v, replaceVar name value e)
-        | ShapeCombination (o, es) ->
-            RebuildShapeCombination(o, es |> List.map (replaceVar name value))
-    findApplication [] quote
+module Simplifiers =
+    let beta quote =
+        let rec findApplication values q =
+            match q with
+            | Application (body, value) ->
+                findApplication (value::values) body 
+            | ShapeLambda (v, e) ->
+                match values with
+                | [] ->
+                    Expr.Lambda(v, findApplication [] e)
+                | h::t ->
+                    findApplication t (replaceVar v.Name h e)
+            | ShapeVar v ->
+                Expr.Var v
+            | ShapeCombination (o, es) ->
+                RebuildShapeCombination(o, es |> List.map (findApplication values))
+        and replaceVar name value body =
+            match body with
+            | ShapeVar v ->
+                if v.Name = name then value else Expr.Var v
+            | ShapeLambda (v, e) ->
+                Expr.Lambda(v, replaceVar name value e)
+            | ShapeCombination (o, es) ->
+                RebuildShapeCombination(o, es |> List.map (replaceVar name value))
+        findApplication [] quote
+
+    let unpipe quote =
+        let rec transform q =
+            match q with
+            | SpecificCall <@@ (|>) @@> (_, _, es) ->
+                match es with
+                | [p;l] ->
+                    Expr.Application(l, p)
+                    |> beta
+                    |> transform
+                | _ ->
+                    failwith "Pipe should always have 2 parameters."
+            | ShapeLambda (v, e) ->
+                Expr.Lambda(v, transform e)
+            | ShapeVar v ->
+                Expr.Var v
+            | ShapeCombination (o, es) ->
+                RebuildShapeCombination(o, es |> List.map transform)
+        transform quote

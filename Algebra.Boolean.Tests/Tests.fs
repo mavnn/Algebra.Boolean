@@ -2,6 +2,7 @@
 
 open Microsoft.FSharp.Quotations
 open Algebra.Boolean
+open Algebra.Boolean.Simplifiers
 open Xunit
 
 [<Fact>]
@@ -119,3 +120,11 @@ let ``Beta reduction 3`` () =
 [<Fact>]
 let ``Beta reduction 4`` () =
     Assert.Equal (<@@ "bob" + "fred" @@>, beta <@@ (fun x y -> x + y) "bob" "fred" @@>)
+
+[<Fact>]
+let ``unpipe works`` () =
+    Assert.Equal (<@@ not false @@>, unpipe <@@ false |> not @@>)
+
+[<Fact>]
+let ``unpipe works recursively`` () =
+    Assert.Equal (<@@ not (not false) @@>, unpipe <@@ false |> not |> not @@>)
