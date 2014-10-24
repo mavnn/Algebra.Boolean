@@ -204,7 +204,6 @@ module Simplifiers =
                 match es with
                 | [p;l] ->
                     Expr.Application(l, p)
-                    |> beta
                     |> transform
                 | _ ->
                     failwith "Pipe should always have 2 parameters."
@@ -214,4 +213,4 @@ module Simplifiers =
                 Expr.Var v
             | ShapeCombination (o, es) ->
                 RebuildShapeCombination(o, es |> List.map transform)
-        transform quote
+        transform quote |> beta
