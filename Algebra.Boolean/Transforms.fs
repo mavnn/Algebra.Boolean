@@ -197,6 +197,35 @@ module Simplifiers =
                 RebuildShapeCombination(o, es |> List.map (replaceVar name value))
         findApplication [] quote
 
+    let unbind quote =
+        let rec findLet q =
+            match q with
+            | Let (var, value, body) ->
+                findLet (replaceVar var.Name value body)
+            | ShapeLambda (v, e) ->
+                Expr.Lambda(v, findLet e)
+            | ShapeVar v ->
+                Expr.Var v
+            | ShapeCombination (o, es) ->
+                RebuildShapeCombination(o, es |> List.map findLet)
+        and replaceVar name value q =
+            match q with
+            | Let (v, e, e') ->
+                if v.Name = name then
+                    findLet (Expr.Let(v, e, e'))
+                else
+                    Expr.Let(v, replaceVar name value e, replaceVar name value e')
+            | ShapeLambda (v, e) ->
+                Expr.Lambda(v, replaceVar name value e)
+            | ShapeVar v ->
+                if v.Name = name then
+                    value
+                else
+                    Expr.Var v
+            | ShapeCombination (o, es) ->
+                RebuildShapeCombination(o, es |> List.map (replaceVar name value))
+        findLet quote
+
     let unpipe quote =
         let rec transform q =
             match q with
@@ -213,4 +242,4 @@ module Simplifiers =
                 Expr.Var v
             | ShapeCombination (o, es) ->
                 RebuildShapeCombination(o, es |> List.map transform)
-        transform quote |> beta
+        transform quote |> unbind |> beta

@@ -122,9 +122,65 @@ let ``Beta reduction 4`` () =
     Assert.Equal (<@@ "bob" + "fred" @@>, beta <@@ (fun x y -> x + y) "bob" "fred" @@>)
 
 [<Fact>]
+let ``Beta reduction 5`` () =
+    Assert.DoesNotThrow(
+        fun () ->
+            beta <@@ Seq.filter (fun x -> true) Seq.empty<string> @@> |> ignore)
+
+[<Fact>]
+let ``Beta reduction 6`` () =
+    Assert.DoesNotThrow(
+        fun () ->
+            beta <@@ 
+                    (fun _ ->
+                        let p =
+                            fun (_ : string) -> true
+                        Seq.filter p Seq.empty<string>) ()
+                @@> |> ignore)
+
+[<Fact>]
+let ``unbind works`` () =
+    Assert.Equal(<@@ 10 + 20 @@>, 
+        unbind <@@ 
+            let x = 10
+            x + 20
+        @@>)
+
+[<Fact>]
+let ``unbind works 2`` () =
+    Assert.Equal(<@@ 10 + 10 @@>, 
+        unbind <@@ 
+            let x = 10
+            x + x
+        @@>)
+
+[<Fact>]
+let ``unbind works 3`` () =
+    Assert.Equal(<@@ 10 + 10 + 20 @@>, 
+        unbind <@@ 
+            let x = 10
+            let y = 20
+            x + x + y
+        @@>)
+
+[<Fact>]
+let ``unbind works 4`` () =
+    Assert.Equal(<@@ 5 + 5 + (20 + 10) @@>, 
+        unbind <@@ 
+            let x = 10 in
+            let y = 20 + x
+            let x = 5
+            x + x + y
+        @@>)
+
+[<Fact>]
 let ``unpipe works`` () =
     Assert.Equal (<@@ not false @@>, unpipe <@@ false |> not @@>)
 
 [<Fact>]
 let ``unpipe works recursively`` () =
     Assert.Equal (<@@ not (not false) @@>, unpipe <@@ false |> not |> not @@>)
+
+[<Fact>]
+let ``Generic method unpiping`` () =
+    Assert.DoesNotThrow (fun () -> unpipe <@@ Seq.empty<string> |> Seq.filter (fun x -> true) @@> |> ignore)
